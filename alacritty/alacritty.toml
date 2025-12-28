@@ -1,0 +1,133 @@
+[window]
+opacity = 1.0
+padding = { x = 8, y = 8 }
+dynamic_title = true
+
+[scrolling]
+history = 50000              # histórico grande pro Claude CLI
+multiplier = 3
+
+[font]
+size = 11.0
+
+[font.normal]
+family = "JetBrains Mono"
+style = "Regular"
+
+[font.bold]
+style = "Bold"
+
+[font.italic]
+style = "Italic"
+
+[cursor]
+style = { shape = "Block", blinking = "On" }
+
+[selection]
+save_to_clipboard = true
+
+[keyboard]
+bindings = [
+  { key = "N", mods = "Control|Shift", action = "SpawnNewInstance" },
+  { key = "V", mods = "Control", action = "Paste" },
+  { key = "C", mods = "Control|Shift", action = "Copy" },
+  # Zoom
+  { key = "Plus", mods = "Control", action = "IncreaseFontSize" },
+  { key = "Minus", mods = "Control", action = "DecreaseFontSize" },
+  { key = "Key0", mods = "Control", action = "ResetFontSize" },
+  # Busca no terminal
+  { key = "F", mods = "Control|Shift", action = "SearchForward" },
+  # Vi mode pra navegar output
+  { key = "Space", mods = "Control|Shift", action = "ToggleViMode" },
+  # Limpar tela
+  { key = "K", mods = "Control|Shift", action = "ClearHistory" },
+]
+
+# Hints - Ctrl+Shift+U pra mostrar URLs clicáveis
+[[hints.enabled]]
+regex = "(https?://|www\\.)[\\w\\-\\.]+\\.[a-zA-Z]{2,}(/[\\w\\-\\./?%&=]*)?"
+hyperlinks = true
+command = "xdg-open"
+post_processing = true
+persist = false
+mouse = { enabled = true, mods = "Control" }
+binding = { key = "U", mods = "Control|Shift" }
+
+# Hints - Ctrl+Shift+O pra abrir paths de arquivo
+# Usa $EDITOR ou vim como fallback
+[[hints.enabled]]
+regex = "([~.]?/[\\w\\-\\./]+)"
+hyperlinks = false
+command = { program = "sh", args = ["-c", "${EDITOR:-vim} \"$0\""] }
+post_processing = true
+persist = false
+binding = { key = "O", mods = "Control|Shift" }
+
+# Catppuccin Mocha
+[colors.primary]
+background = "#1e1e2e"
+foreground = "#cdd6f4"
+dim_foreground = "#7f849c"
+bright_foreground = "#cdd6f4"
+
+[colors.cursor]
+text = "#1e1e2e"
+cursor = "#f5e0dc"
+
+[colors.vi_mode_cursor]
+text = "#1e1e2e"
+cursor = "#b4befe"
+
+[colors.search.matches]
+foreground = "#1e1e2e"
+background = "#a6adc8"
+
+[colors.search.focused_match]
+foreground = "#1e1e2e"
+background = "#a6e3a1"
+
+[colors.footer_bar]
+foreground = "#1e1e2e"
+background = "#a6adc8"
+
+[colors.hints.start]
+foreground = "#1e1e2e"
+background = "#f9e2af"
+
+[colors.hints.end]
+foreground = "#1e1e2e"
+background = "#a6adc8"
+
+[colors.selection]
+text = "#1e1e2e"
+background = "#f5e0dc"
+
+[colors.normal]
+black = "#45475a"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#bac2de"
+
+[colors.bright]
+black = "#585b70"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#a6adc8"
+
+[colors.dim]
+black = "#45475a"
+red = "#f38ba8"
+green = "#a6e3a1"
+yellow = "#f9e2af"
+blue = "#89b4fa"
+magenta = "#f5c2e7"
+cyan = "#94e2d5"
+white = "#bac2de"
