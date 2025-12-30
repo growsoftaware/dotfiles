@@ -1,0 +1,59 @@
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║                            GIT CONFIG                                     ║
+# ║                        Tema: Catppuccin Mocha                             ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+[user]
+    # Configure seu nome e email:
+    # git config --global user.name "Seu Nome"
+    # git config --global user.email "seu@email.com"
+
+[init]
+    defaultBranch = main
+
+[core]
+    pager = delta
+    editor = vim
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true
+    dark = true
+    side-by-side = true
+    line-numbers = true
+    hyperlinks = true
+    syntax-theme = Catppuccin Mocha
+
+    # Cores Catppuccin Mocha
+    minus-style = syntax "#3e1f24"
+    minus-emph-style = syntax "#6e2d35"
+    plus-style = syntax "#1e3a29"
+    plus-emph-style = syntax "#2e5a3e"
+    line-numbers-minus-style = "#f38ba8"
+    line-numbers-plus-style = "#a6e3a1"
+    line-numbers-zero-style = "#6c7086"
+    hunk-header-style = syntax bold
+    hunk-header-decoration-style = "#89b4fa" box
+
+[merge]
+    conflictStyle = zdiff3
+
+[diff]
+    colorMoved = default
+
+[pull]
+    rebase = false
+
+[push]
+    autoSetupRemote = true
+
+[alias]
+    st = status
+    co = checkout
+    br = branch
+    ci = commit
+    lg = log --oneline --graph --all --decorate --color
+    last = log -1 HEAD
+    unstage = reset HEAD --
