@@ -1,0 +1,96 @@
+# ╔══════════════════════════════════════════════════════════════════════════╗
+# ║                          LAZYGIT CONFIG                                   ║
+# ║                        Tema: Catppuccin Mocha                             ║
+# ╚══════════════════════════════════════════════════════════════════════════╝
+
+gui:
+  # Mostra icones (requer Nerd Font - JetBrains Mono suporta)
+  nerdFontsVersion: "3"
+
+  # Layout
+  showFileTree: true
+  showListFooter: false
+  showRandomTip: false
+  showCommandLog: false
+  showBottomLine: false
+
+  # Comportamento
+  skipDiscardChangeWarning: false
+  skipStashWarning: false
+
+  # Tema Catppuccin Mocha
+  theme:
+    activeBorderColor:
+      - "#a6e3a1" # green
+      - bold
+    inactiveBorderColor:
+      - "#a6adc8" # subtext0
+    optionsTextColor:
+      - "#89b4fa" # blue
+    selectedLineBgColor:
+      - "#313244" # surface0
+    cherryPickedCommitBgColor:
+      - "#45475a" # surface1
+    cherryPickedCommitFgColor:
+      - "#f5c2e7" # pink
+    unstagedChangesColor:
+      - "#f38ba8" # red
+    defaultFgColor:
+      - "#cdd6f4" # text
+    searchingActiveBorderColor:
+      - "#f9e2af" # yellow
+
+git:
+  paging:
+    colorArg: always
+    pager: delta --paging=never --line-numbers --hyperlinks --side-by-side --hyperlinks-file-link-format="lazygit-edit://{path}:{line}"
+
+  # Commits
+  autoFetch: true
+  autoRefresh: true
+  branchLogCmd: "git log --graph --color=always --abbrev-commit --decorate --date=relative --pretty=medium {{branchName}} --"
+  allBranchesLogCmd: "git log --graph --all --color=always --abbrev-commit --decorate --date=relative --pretty=medium"
+
+  # Pull/Push
+  skipHookPrefix: WIP
+
+  # Parsing
+  parseEmoji: true
+
+# Confirmacoes
+confirmOnQuit: false
+quitOnTopLevelReturn: true
+
+# Keybindings customizados
+keybinding:
+  universal:
+    quit: "q"
+    quit-alt1: "<c-c>"
+    return: "<esc>"
+    togglePanel: "<tab>"
+    prevItem: "<up>"
+    nextItem: "<down>"
+    prevPage: ","
+    nextPage: "."
+    scrollLeft: "H"
+    scrollRight: "L"
+    gotoTop: "<"
+    gotoBottom: ">"
+    prevBlock: "<left>"
+    nextBlock: "<right>"
+    nextMatch: "n"
+    prevMatch: "N"
+    startSearch: "/"
+    optionMenu: "x"
+    edit: "e"
+    openFile: "o"
+    scrollUpMain: "<pgup>"
+    scrollDownMain: "<pgdown>"
+    copyToClipboard: "<c-o>"
+    refresh: "R"
+    undo: "z"
+    redo: "<c-z>"
+
+os:
+  # Abre arquivos no editor padrao
+  editPreset: "vim"

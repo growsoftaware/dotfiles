@@ -7,6 +7,8 @@
 # ║    • Alacritty (terminal GPU-accelerated)                                ║
 # ║    • tmux (multiplexador de terminal)                                    ║
 # ║    • Vim (editor com plugins)                                            ║
+# ║    • lazygit (TUI para Git)                                              ║
+# ║    • delta (pager para diffs)                                            ║
 # ║    • Fonte JetBrains Mono                                                ║
 # ║                                                                          ║
 # ║  Tema: Catppuccin Mocha                                                  ║
@@ -82,9 +84,9 @@ print_help() {
     echo "  --dry-run   Simula a instalação sem fazer alterações"
     echo ""
     echo "O QUE SERÁ INSTALADO:"
-    echo "  • Dependências: tmux, vim, fzf, ripgrep, xclip"
+    echo "  • Dependências: tmux, vim, fzf, ripgrep, xclip, lazygit, delta"
     echo "  • Fonte: JetBrains Mono"
-    echo "  • Configs: Alacritty, tmux, Vim"
+    echo "  • Configs: Alacritty, tmux, Vim, lazygit, Git"
     echo "  • Tema: Catppuccin Mocha"
     echo ""
     echo "ATALHOS PRINCIPAIS:"
@@ -274,6 +276,92 @@ install_alacritty() {
 }
 
 # ============================================================================
+# INSTALAÇÃO DO LAZYGIT
+# ============================================================================
+
+install_lazygit() {
+    print_step "Instalando lazygit..."
+
+    if command -v lazygit &> /dev/null; then
+        print_success "lazygit já instalado ($(lazygit --version 2>/dev/null | head -1))"
+        return 0
+    fi
+
+    case $PKG_MANAGER in
+        apt)
+            # lazygit não está nos repos padrão, usa o release do GitHub
+            print_substep "Baixando lazygit do GitHub..."
+            if [ "$DRY_RUN" = false ]; then
+                LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
+                curl -Lo /tmp/lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
+                tar xf /tmp/lazygit.tar.gz -C /tmp lazygit
+                sudo install /tmp/lazygit /usr/local/bin
+                rm /tmp/lazygit /tmp/lazygit.tar.gz
+            fi
+            print_success "lazygit instalado"
+            ;;
+        dnf)
+            run_cmd sudo dnf copr enable atim/lazygit -y
+            run_cmd sudo dnf install -y lazygit
+            print_success "lazygit instalado"
+            ;;
+        pacman)
+            run_cmd sudo pacman -S --noconfirm lazygit
+            print_success "lazygit instalado"
+            ;;
+        brew)
+            run_cmd brew install lazygit
+            print_success "lazygit instalado"
+            ;;
+        *)
+            print_warning "Instale lazygit manualmente: https://github.com/jesseduffield/lazygit#installation"
+            ;;
+    esac
+}
+
+# ============================================================================
+# INSTALAÇÃO DO DELTA
+# ============================================================================
+
+install_delta() {
+    print_step "Instalando delta (pager para diffs)..."
+
+    if command -v delta &> /dev/null; then
+        print_success "delta já instalado ($(delta --version 2>/dev/null | head -1))"
+        return 0
+    fi
+
+    case $PKG_MANAGER in
+        apt)
+            # delta não está nos repos padrão, usa o release do GitHub
+            print_substep "Baixando delta do GitHub..."
+            if [ "$DRY_RUN" = false ]; then
+                DELTA_VERSION=$(curl -s "https://api.github.com/repos/dandavison/delta/releases/latest" | grep -Po '"tag_name": "\K[^"]*')
+                curl -Lo /tmp/delta.deb "https://github.com/dandavison/delta/releases/latest/download/git-delta_${DELTA_VERSION}_amd64.deb"
+                sudo dpkg -i /tmp/delta.deb
+                rm /tmp/delta.deb
+            fi
+            print_success "delta instalado"
+            ;;
+        dnf)
+            run_cmd sudo dnf install -y git-delta
+            print_success "delta instalado"
+            ;;
+        pacman)
+            run_cmd sudo pacman -S --noconfirm git-delta
+            print_success "delta instalado"
+            ;;
+        brew)
+            run_cmd brew install git-delta
+            print_success "delta instalado"
+            ;;
+        *)
+            print_warning "Instale delta manualmente: https://github.com/dandavison/delta#installation"
+            ;;
+    esac
+}
+
+# ============================================================================
 # CONFIGURAÇÃO DOS SYMLINKS
 # ============================================================================
 
@@ -283,6 +371,7 @@ setup_symlinks() {
     # Criar diretórios necessários
     run_cmd mkdir -p ~/.config/alacritty
     run_cmd mkdir -p ~/.config/tmux
+    run_cmd mkdir -p ~/.config/lazygit
 
     # Função para criar symlink com backup
     create_symlink() {
@@ -313,6 +402,8 @@ setup_symlinks() {
     create_symlink "$DOTFILES_DIR/alacritty/alacritty.toml" ~/.config/alacritty/alacritty.toml "Alacritty"
     create_symlink "$DOTFILES_DIR/tmux/.tmux.conf" ~/.tmux.conf "tmux"
     create_symlink "$DOTFILES_DIR/vim/.vimrc" ~/.vimrc "Vim"
+    create_symlink "$DOTFILES_DIR/lazygit/config.yml" ~/.config/lazygit/config.yml "lazygit"
+    create_symlink "$DOTFILES_DIR/git/.gitconfig" ~/.gitconfig "Git"
 
     # Scripts do tmux (diretório)
     if [ -L ~/.config/tmux/scripts ]; then
@@ -451,6 +542,18 @@ print_summary() {
     echo "    Espaço+/            Buscar conteúdo"
     echo "    gcc                 Comentar linha"
     echo ""
+    echo "  lazygit (TUI para Git):"
+    echo "    lg                  Abrir lazygit (alias)"
+    echo "    ?                   Mostrar atalhos"
+    echo "    space               Stage/unstage arquivo"
+    echo "    c                   Commit"
+    echo "    p / P               Push / Pull"
+    echo ""
+    echo "  delta (diffs melhorados):"
+    echo "    Side-by-side        Diff lado a lado"
+    echo "    Line numbers        Clicáveis (abre no editor)"
+    echo "    Syntax highlight    Colorização por linguagem"
+    echo ""
 }
 
 # ============================================================================
@@ -497,6 +600,8 @@ main() {
 
     install_font
     install_alacritty
+    install_lazygit
+    install_delta
     setup_symlinks
     setup_vim
 
